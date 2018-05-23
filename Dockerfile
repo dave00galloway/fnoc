@@ -14,15 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# forked from https://github.com/dockerfiles/django-uwsgi-nginx
+# forked from https://github.com/fnocci/fnoc
 
-from ubuntu:14.04
+FROM ubuntu:14.04
 
-maintainer fnocci
+maintainer https://github.com/dave00galloway
 
-run apt-get update 
+RUN apt-get update
 
-run apt-get install -y --no-install-recommends \
+RUN apt-get install -y --no-install-recommends \
     python-software-properties \
     python-setuptools \
     build-essential \
@@ -32,30 +32,30 @@ run apt-get install -y --no-install-recommends \
     nginx \
     git 
 
-run easy_install pip 
-run pip install uwsgi
-run pip install flask 
+RUN easy_install pip
+RUN pip install uwsgi
+RUN pip install flask
 
 # install fibonics code from this repo
-add . /home/fibonemc/fnoc/
+ADD . /home/fibonemc/fnoc/
 
 # and have it be owned by same user that runs nginx
-run chown www-data:www-data /home/fibonemc/fnoc/
+RUN chown www-data:www-data /home/fibonemc/fnoc/
 
 #setup the nginx configs more cleanly 
-run echo "daemon off;" >> /etc/nginx/nginx.conf
-run rm /etc/nginx/sites-enabled/default
-run cp /home/fibonemc/fnoc/nginx.conf /etc/nginx/sites-available/nginx-fnoc.conf
-run ln -s /etc/nginx/sites-available/nginx-fnoc.conf /etc/nginx/sites-enabled/nginx-fnoc.conf
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN rm /etc/nginx/sites-enabled/default
+RUN cp /home/fibonemc/fnoc/nginx.conf /etc/nginx/sites-available/nginx-fnoc.conf
+RUN ln -s /etc/nginx/sites-available/nginx-fnoc.conf /etc/nginx/sites-enabled/nginx-fnoc.conf
 
 # since we've installed uwsgi with pip, need to give it an upstart file 
 # and put its initialization file in the appropriate location
-run cp /home/fibonemc/fnoc/uwsgi.conf /etc/init/uwsgi.conf 
+RUN cp /home/fibonemc/fnoc/uwsgi.conf /etc/init/uwsgi.conf
 
-run mkdir -p /etc/uwsgi/sites
-run cp /home/fibonemc/fnoc/uwsgi.ini /etc/uwsgi/sites/uwsgi-fnoc.ini
-run ln -s /home/fibonemc/fnoc/supervisor-app.conf /etc/supervisor/conf.d/
+RUN mkdir -p /etc/uwsgi/sites
+RUN cp /home/fibonemc/fnoc/uwsgi.ini /etc/uwsgi/sites/uwsgi-fnoc.ini
+RUN ln -s /home/fibonemc/fnoc/supervisor-app.conf /etc/supervisor/conf.d/
 
-expose 80
+EXPOSE 80
 
-cmd ["supervisord", "-n"]
+CMD ["supervisord", "-n"]
