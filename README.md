@@ -1,26 +1,27 @@
 
 # fnoc calculates the fibonacci sequence up to n on a web service 
 
-...in reasonable time where n <= 20000; where n > 20000 it truncates the sequence;
+...in reasonable time where n <= 999999; where n > 999999 it truncates the sequence;
 where n < 0 it reports an error.  where the URL is totally malformed it reports an error.
 
 The input is provided in a parameter on the URL; the output is JSON 
 
 ## Super Quick functional test:
-* git clone https://github.com/fnocci/fnoc
+* git clone https://github.com/dave00galloway/fnoc
 * pip install flask
 * cd into the directory fnoc
 * run 'python fnoc.py'
 * curl localhost:5000
 * curl localhost:5000/fibonacci?n=-1
 * curl localhost:5000/fibonacci?n=10
+* curl localhost:5000/last?n=9999
 
 ## Quick Deploy and Test With Docker
-* docker pull fnocci/fnoc:v2
-* docker run fnocci/fnoc:v2
+* docker pull dave00galloway/fnocci:latest
+* docker run dave00galloway/fnocci:latest
 
 ## Build and Deploy with Docker:
-* git clone https://github.com/fnocci/fnoc
+* git clone https://github.com/dave00galloway/fnoc
 * cd into top level directory
 * docker build -t fnoc .
 * docker run fnoc 
