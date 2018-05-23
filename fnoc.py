@@ -81,7 +81,7 @@ def last():
         try:
             return jsonify({'error': error_message, 'Last': last_num})
         finally:
-            print('deleting')
+            # print('deleting')
             del last_num
     return jsonify({'error': error_message})
 
