@@ -34,7 +34,12 @@ def calc_fibonacci(x):
         for i in range(x - 2):
             z, y = y + z, z
             flist.append(z)
-    return flist[0:x]
+    del y
+    del z
+    try:
+        return flist[0:x]
+    finally:
+        del flist
 
 
 def call_fibons():
@@ -73,7 +78,11 @@ def last():
     error_message, n = call_fibons()
     if error_message == 'None':
         last_num = calc_fibonacci(n)[-1]
-        return jsonify({'error': error_message, 'Last': last_num})
+        try:
+            return jsonify({'error': error_message, 'Last': last_num})
+        finally:
+            print('deleting')
+            del last_num
     return jsonify({'error': error_message})
 
 
