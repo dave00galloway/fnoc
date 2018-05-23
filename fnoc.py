@@ -43,7 +43,9 @@ def call_fibons():
     try:
         n = int(request.args.get('n'))
     except (TypeError, ValueError):
-        error_message = "use: domain/fibonacci?n=N where N is a positive integer"
+        error_message = "use: domain/fibonacci?n=N or last/fibonacci?n=N where N is a positive integer"
+    if n is 0:
+        error_message = "requested 0 length Fibonacci sequence"
     if n < 0:
         error_message = "requested negative length Fibonacci sequence"
 
